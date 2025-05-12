@@ -27,9 +27,17 @@ export const links: Link[] = [
 
 const NavLinks = () => {
   return (
-    <div className="menu text-base-content">
+    <div className="menu  text-base-content min-h-full w-80 p-5  ">
       {links.map((link) => {
-        return <Link href={link.href}>{link.label}</Link>;
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="p-3 hover:bg-base-100 rounded text-md"
+          >
+            {link.label}
+          </Link>
+        );
       })}
     </div>
   );

@@ -16,7 +16,7 @@ function layout({ children }: { children: ReactNode }) {
         <div className="bg-base-200 px-8 py-12 min-h-screen">{children}</div>
       </div>
 
-      <div className="drawer-side">
+      <div className="drawer-side shadow-xl/">
         <label
           htmlFor="my-drawer-2"
           aria-label="close sidebar"
