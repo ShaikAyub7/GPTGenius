@@ -24,6 +24,7 @@ export const links: Link[] = [
     label: "Profile",
   },
 ];
+
 const NavLinks = () => {
   return (
     <div className="menu text-base-content">
