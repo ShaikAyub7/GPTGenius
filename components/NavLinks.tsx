@@ -33,7 +33,7 @@ const NavLinks = () => {
           <Link
             key={link.href}
             href={link.href}
-            className="p-3 hover:bg-base-100 rounded text-md"
+            className="p-3 hover:bg-base-100 hover:shadow rounded-lg text-[16px] capitalize leading-loose"
           >
             {link.label}
           </Link>

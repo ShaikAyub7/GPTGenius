@@ -39,14 +39,14 @@ const Chat = () => {
 
   return (
     <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr-auto]">
-      <div>
+      <div className="mb-7">
         {message.map(({ role, content }, index) => {
           const avatar = role == "user" ? "👤" : "🤖";
           const bcg = role == "user" ? "bg-base-200" : "bg-base-100";
           return (
             <div
               key={index}
-              className={`${bcg} flex py-6 -mx-8 px-8 text-lg leading-loose border-b border-base-300 mb-7`}
+              className={`${bcg} flex py-4 -mx-8 px-8 text-lg leading-loose border-b border-base-300 `}
             >
               <span className="mr-4 ">{avatar}</span>
               <p className="max-w-3xl">{content}</p>
@@ -69,7 +69,7 @@ const Chat = () => {
             onChange={(e) => setText(e.target.value)}
           />
           <button
-            className="btn btn-primary p-5 rounded join-item"
+            className="btn btn-primary p-4 rounded-br-lg rounded-tr-lg  join-item"
             disabled={isPending}
           >
             {isPending ? "please wait..." : "Ask Question"}
