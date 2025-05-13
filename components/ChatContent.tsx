@@ -27,7 +27,7 @@ const ChatContent = ({
               )}
             </span>
           ) : (
-            <SiOpenaigym className="w-6 h-6 text-primary" />
+            <SiOpenaigym className="w-6 h-6 text-primary mt-2" />
           );
 
         const bcg = role === "user" ? "bg-base-200" : "bg-base-100";
