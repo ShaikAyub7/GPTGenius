@@ -36,7 +36,6 @@ export const generateChatResponse = async (
     message: chatMessage[chatMessage.length - 1].content,
   });
 
-  console.log(result.text);
   const history = chat.getHistory();
   const messages = [];
   for (const message of history) {
