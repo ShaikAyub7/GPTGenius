@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma-client" // for example
+  output   = "../generated/prisma-client"
 }
 
 datasource db {
@@ -26,4 +26,11 @@ model Tour {
   stops       Json
 
   @@unique([country, city])
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  role      String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
 }

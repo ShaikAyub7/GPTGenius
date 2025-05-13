@@ -132,6 +132,13 @@ exports.Prisma.TourScalarFieldEnum = {
   stops: 'stops'
 };
 
+exports.Prisma.ChatScalarFieldEnum = {
+  id: 'id',
+  role: 'role',
+  parts: 'parts',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -159,7 +166,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Tour: 'Tour'
+  Tour: 'Tour',
+  Chat: 'Chat'
 };
 
 /**

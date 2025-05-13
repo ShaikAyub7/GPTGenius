@@ -6,7 +6,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 
-const ChatsPage = () => {
+const ChatsPage = async () => {
   const queryClient = new QueryClient({});
 
   return (

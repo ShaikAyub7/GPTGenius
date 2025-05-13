@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import ChatContent from "./ChatContent";
 
 const Chat = () => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState<string>("");
   const [message, setMessage] = useState<{ role: string; content: string }[]>(
     []
   );
@@ -16,25 +16,38 @@ const Chat = () => {
       role: string;
       content: string;
     }): Promise<string> => {
-      const chatMessage = [...message, query];
-      const response = await generateChatResponse(chatMessage);
-      return response || "no response";
+      try {
+        const chatMessage = [...message, query];
+
+        const response = await generateChatResponse(chatMessage);
+
+        return response || "no response";
+      } catch (error) {
+        console.error("Error processing the mutation:", error);
+        throw new Error("An error occurred while processing your message.");
+      }
     },
 
-    onSuccess(data, variables) {
+    onSuccess(data) {
       if (!data) {
         toast.error("Something went wrong");
         return;
       }
       setMessage((prev) => [...prev, { role: "assistant", content: data }]);
     },
+
+    onError(error) {
+      toast.error(error.message || "Something went wrong.");
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isPending) return;
+
     const query = { role: "user", content: text };
-    mutate(query);
     setMessage((prev) => [...prev, query]);
+    mutate(query);
     setText("");
   };
 

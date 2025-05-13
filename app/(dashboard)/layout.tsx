@@ -2,7 +2,7 @@ import Drawer from "@/components/Drawer";
 import { ReactNode } from "react";
 import { FaBarsStaggered } from "react-icons/fa6";
 
-function layout({ children }: { children: ReactNode }) {
+function layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="drawer lg:drawer-open">
       <input type="checkbox" id="my-drawer-2 " className="drawer-toggle" />
