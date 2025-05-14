@@ -10,20 +10,20 @@ export default async function SingleTour({
 }: {
   params: { id: string };
 }) {
-  const tour = await getSingleTour(params.id);
+  // const tour = await getSingleTour(params.id);
 
-  if (!tour) {
-    return redirect("/tours");
-  }
+  // if (!tour) {
+  //   return redirect("/tours");
+  // }
 
-  const tourImage = await generateTourImages({
-    city: tour.city,
-    country: tour.country,
-  });
+  // const tourImage = await generateTourImages({
+  //   city: tour.city,
+  //   country: tour.country,
+  // });
 
   return (
     <div>
-      <Link href="/tours" className="btn btn-secondary mb-12">
+      {/* <Link href="/tours" className="btn btn-secondary mb-12">
         Back to tours
       </Link>
       {tourImage ? (
@@ -35,7 +35,7 @@ export default async function SingleTour({
           />
         </div>
       ) : null}
-      <TourInfo tour={{ ...tour, stops: tour.stops as string[] }} />
+      <TourInfo tour={{ ...tour, stops: tour.stops as string[] }} /> */}
     </div>
   );
 }
