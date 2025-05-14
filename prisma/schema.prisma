@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma-client" 
 }
 
 
@@ -30,12 +29,6 @@ model Tour {
 
 }
 
-model Chat {
-  id        String   @id @default(cuid())
-  role      String
-  parts     Json     
-  createdAt DateTime @default(now())
-}
 
 model Token {
   clerkId String @id

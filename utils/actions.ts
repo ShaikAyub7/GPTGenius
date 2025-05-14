@@ -1,7 +1,6 @@
 "use server";
 
 import { GoogleGenAI, Modality } from "@google/genai";
-import * as fs from "node:fs";
 
 import prisma from "./db";
 import { Tour } from "@/components/TourInfo";
@@ -65,7 +64,7 @@ Once you have a list, create a one-day tour. Response should be in the following
     "country": "${country}",
     "title": "title of the tour",
     "description": "description of the city and tour",
-    "stops": ["short paragraph on the stop 1 ", "short paragraph on the stop 2", "short paragraph on the stop 3"]
+    "stops": ["short name ", "short name", "short name"]
   }
 }
 If you can't find info on exact ${city}, or ${city} does not exist, or its population is less than 1, or it is not located in the following ${country}, return { "tour": null }, with no additional characters.`;
@@ -177,4 +176,29 @@ export const generateTourImages = async ({
   } catch (error) {
     console.log(error);
   }
+};
+
+export const fetchUserId = async (clerkId: string) => {
+  const result = await prisma.token.findUnique({
+    where: {
+      clerkId,
+    },
+  });
+  return result?.tokens;
+};
+export const generateUserTokensForId = async (clerkId: string) => {
+  const result = await prisma.token.create({
+    data: {
+      clerkId,
+    },
+  });
+  return result?.tokens;
+};
+
+export const fetchOrGenerateTokens = async (clerkId: string) => {
+  const result = await fetchUserId(clerkId);
+  if (result) {
+    return result;
+  }
+  return await generateUserTokensForId(clerkId);
 };
