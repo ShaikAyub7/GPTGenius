@@ -7,11 +7,15 @@ import { Tour } from "@/components/TourInfo";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY });
 
-const countTokensResponse = await ai.models.countTokens({
-  model: "gemini-2.0-flash",
-  contents: "hello?",
-});
-console.log("Tokens used:", countTokensResponse.totalTokens);
+export const getTokens = async (id: string) => {
+  const countTokensResponse = await ai.models.countTokens({
+    model: "gemini-2.0-flash",
+    contents: "hello?",
+  });
+  console.log("Tokens used:", countTokensResponse.totalTokens);
+
+  return countTokensResponse;
+};
 
 export const generateChatResponse = async (
   chatMessages: { role: string; content: string }[]
