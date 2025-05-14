@@ -1,14 +1,13 @@
-// app/(dashboard)/tours/[id]/page.tsx
 import { generateTourImages, getSingleTour } from "@/utils/actions";
+import TourInfo from "@/components/TourInfo";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import TourInfo from "@/components/TourInfo";
 
-interface PageProps {
+type PageProps = {
   params: {
     id: string;
   };
-}
+};
 
 export default async function Page({ params }: PageProps) {
   const tour = await getSingleTour(params.id);
