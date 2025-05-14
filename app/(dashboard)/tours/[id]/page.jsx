@@ -3,8 +3,6 @@ import TourInfo from "@/components/TourInfo";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-
-
 export default async function Page({ params }) {
   const tour = await getSingleTour(params.id);
 
@@ -29,7 +27,7 @@ export default async function Page({ params }) {
           className="rounded-xl shadow-xl mb-16 h-96 w-96 object-cover"
         />
       )}
-      <TourInfo tour={{ ...tour, stops: tour.stops as string[] }} />
+      <TourInfo tour={{ ...tour, stops: tour.stops }} />
     </div>
   );
 }
