@@ -12,6 +12,10 @@ export const links: Link[] = [
     label: "Chat",
   },
   {
+    href: "/image-generator",
+    label: "Ai image",
+  },
+  {
     href: "/tours",
     label: "Tours",
   },

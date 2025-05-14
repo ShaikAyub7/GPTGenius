@@ -1,20 +1,19 @@
 "use server";
 
-import { GoogleGenAI, Modality } from "@google/genai";
+import { GoogleGenAI, Modality, Content } from "@google/genai";
 
 import prisma from "./db";
 import { Tour } from "@/components/TourInfo";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY });
 
-export const getTokens = async (id: string) => {
-  const countTokensResponse = await ai.models.countTokens({
+export const getTokens = async () => {
+  const response = await ai.models.countTokens({
     model: "gemini-2.0-flash",
     contents: "hello?",
   });
-  console.log("Tokens used:", countTokensResponse.totalTokens);
 
-  return countTokensResponse;
+  return response.totalTokens;
 };
 
 export const generateChatResponse = async (
@@ -205,4 +204,40 @@ export const fetchOrGenerateTokens = async (clerkId: string) => {
     return result;
   }
   return await generateUserTokensForId(clerkId);
+};
+
+export const generateImage = async (
+  chatMessages: { role: string; content: string }[]
+) => {
+  const formattedMessages: Content[] = chatMessages.map((msg) => ({
+    role: msg.role,
+    parts: [{ text: msg.content }],
+  }));
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-preview-image-generation",
+      contents: formattedMessages,
+      config: {
+        responseModalities: [Modality.TEXT, Modality.IMAGE],
+      },
+    });
+
+    const imagePart = response?.candidates?.[0]?.content?.parts?.find((part) =>
+      part.inlineData?.mimeType?.startsWith("image/")
+    );
+
+    if (imagePart?.inlineData?.data) {
+      const base64 = imagePart.inlineData.data;
+      const mimeType = imagePart.inlineData.mimeType || "image/png";
+      const imageUrl = `data:${mimeType};base64,${base64}`;
+
+      return imageUrl;
+    }
+  } catch (error) {
+    console.log(error);
+    return "something went wrong!";
+  }
+
+  return null;
 };

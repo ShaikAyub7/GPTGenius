@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import ChatContent from "./ChatContent";
 
-const Chat = () => {
+const Chat = ({ token }: { token: number }) => {
   const [text, setText] = useState<string>("");
   const [message, setMessage] = useState<{ role: string; content: string }[]>(
     []
@@ -56,6 +56,7 @@ const Chat = () => {
       <h3 className="font-bold text-center text-2xl leading-3.5 tracking-wider">
         Welcome to GPTGenius
         <span className="text-[8px] ml-1 text-base-400">V.0.1</span>
+        <p>{token}</p>
       </h3>
       <ChatContent isPending={isPending} message={message} />
       <form
