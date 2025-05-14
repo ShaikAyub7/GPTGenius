@@ -1,5 +1,6 @@
 import React from "react";
 import { Prisma } from "@prisma/client";
+import type { JsonValue } from "@prisma/client/runtime/library";
 import ToursCard from "./ToursCard";
 
 export type Tours = {
@@ -9,8 +10,7 @@ export type Tours = {
   country: string;
   id: string;
   createdAt: Date;
-  updatedAt: Date;
-  stops: Prisma.JsonValue;
+  stops: JsonValue;
 };
 
 const ToursList = ({ data }: { data: Tours[] }) => {
