@@ -4,13 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
-type Props = {
-  params: {
-    id: string;
-  };
-};
 
-export default async function SingleTour({ params }: Props) {
+export default async function SingleTour({
+  params,
+}: {
+  params: { id: string };
+}) {
   const tour = await getSingleTour(params.id);
 
   if (!tour) {
@@ -21,9 +20,10 @@ export default async function SingleTour({ params }: Props) {
     city: tour.city,
     country: tour.country,
   });
+
   return (
     <div>
-      <Link href={"/tours"} className="btn btn-secondary mb-12">
+      <Link href="/tours" className="btn btn-secondary mb-12">
         Back to tours
       </Link>
       {tourImage ? (
