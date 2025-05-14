@@ -4,12 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+type Props = {
+  params: {
+    id: string;
+  };
+};
 
-export default async function SingleTour({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function SingleTour({ params }: Props) {
   const { id } = await params;
   const tour = await getSingleTour(id);
 
