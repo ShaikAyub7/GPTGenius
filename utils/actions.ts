@@ -1,6 +1,8 @@
 "use server";
 
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Modality } from "@google/genai";
+import * as fs from "node:fs";
+
 import prisma from "./db";
 import { Tour } from "@/components/TourInfo";
 
@@ -25,6 +27,7 @@ export const generateChatResponse = async (
       model: "gemini-2.0-flash",
       config: {
         temperature: 0,
+        maxOutputTokens: 100,
       },
       history,
     });
@@ -110,4 +113,68 @@ export const createNewTour = async (tour: Tour) => {
   return prisma.tour.create({
     data: tour,
   });
+};
+
+export const getAllTours = async (searchTerm: string) => {
+  if (!searchTerm) {
+    const tours = await prisma.tour.findMany({
+      orderBy: {
+        city: "asc",
+      },
+    });
+    return tours;
+  }
+  const tours = await prisma.tour.findMany({
+    where: {
+      OR: [
+        {
+          city: {
+            contains: searchTerm,
+          },
+          country: {
+            contains: searchTerm,
+          },
+        },
+      ],
+    },
+  });
+  return tours;
+};
+
+export const getSingleTour = async (id: string) => {
+  return prisma.tour.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
+export const generateTourImages = async ({
+  city,
+  country,
+}: {
+  city: string;
+  country: string;
+}) => {
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-preview-image-generation",
+      contents: `a panoramic view of the ${city} ${country}`,
+      config: {
+        responseModalities: [Modality.TEXT, Modality.IMAGE],
+      },
+    });
+    const imagePart = response?.candidates?.[0]?.content?.parts?.find((part) =>
+      part.inlineData?.mimeType?.startsWith("image/")
+    );
+
+    if (imagePart?.inlineData?.data) {
+      const base64 = imagePart.inlineData.data;
+      const mimeType = imagePart.inlineData.mimeType || "image/png"; // Fallback if missing
+      const imageUrl = `data:${mimeType};base64,${base64}`;
+      return imageUrl;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };

@@ -36,3 +36,8 @@ model Chat {
   parts     Json     
   createdAt DateTime @default(now())
 }
+
+model Token {
+  clerkId String @id
+  tokens Int @default(1000)
+}
