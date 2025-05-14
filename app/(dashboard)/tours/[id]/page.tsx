@@ -11,8 +11,7 @@ type Props = {
 };
 
 export default async function SingleTour({ params }: Props) {
-  const { id } = await params;
-  const tour = await getSingleTour(id);
+  const tour = await getSingleTour(params.id);
 
   if (!tour) {
     return redirect("/tours");
