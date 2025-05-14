@@ -3,13 +3,9 @@ import TourInfo from "@/components/TourInfo";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
 
-export default async function Page({ params }: PageProps) {
+
+export default async function Page({ params }) {
   const tour = await getSingleTour(params.id);
 
   if (!tour) {
