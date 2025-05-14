@@ -8,6 +8,7 @@ import { generateTourImages, getAllTours } from "@/utils/actions";
 
 const AllToursPage = async () => {
   const queryClient = new QueryClient({});
+
   await queryClient.prefetchQuery({
     queryKey: ["tours", ""],
     queryFn: () => getAllTours(""),
@@ -15,7 +16,7 @@ const AllToursPage = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ToursPage />{" "}
+      <ToursPage />
     </HydrationBoundary>
   );
 };
