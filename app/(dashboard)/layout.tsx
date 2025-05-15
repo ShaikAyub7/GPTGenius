@@ -5,10 +5,11 @@ import { FaBarsStaggered } from "react-icons/fa6";
 function layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="drawer lg:drawer-open">
-      <input type="checkbox" id="my-drawer-2 " className="drawer-toggle" />
+      <input type="checkbox" id="my-drawer" className="drawer-toggle" />
+
       <div className="drawer-content">
         <label
-          htmlFor="my-drawer-2"
+          htmlFor="my-drawer"
           className="drawer-button lg:hidden fixed top-6 right-6"
         >
           <FaBarsStaggered className="w-8 h-8 text-primary" />
@@ -18,7 +19,7 @@ function layout({ children }: { children: React.ReactNode }) {
 
       <div className="drawer-side shadow-xl/">
         <label
-          htmlFor="my-drawer-2"
+          htmlFor="my-drawer"
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>

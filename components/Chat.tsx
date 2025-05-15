@@ -52,7 +52,7 @@ const Chat = ({ token }: { token: number }) => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto]">
+    <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto ]">
       <h3 className="font-bold text-center text-2xl leading-3.5 tracking-wider">
         Welcome to GPTGenius
         <span className="text-[8px] ml-1 text-base-400">V.0.1</span>
@@ -61,7 +61,7 @@ const Chat = ({ token }: { token: number }) => {
       <ChatContent isPending={isPending} message={message} />
       <form
         onSubmit={handleSubmit}
-        className="max-w-4xl pt-12 fixed bottom-6 w-full"
+        className="fixed bottom-6 w-full max-w-lg lg:max-w-4xl pt-12  md:max-w-xl"
       >
         <div className="join w-full">
           <input
@@ -73,7 +73,7 @@ const Chat = ({ token }: { token: number }) => {
             onChange={(e) => setText(e.target.value)}
           />
           <button
-            className="btn btn-primary p-4 rounded-br-lg rounded-tr-lg join-item"
+            className="btn btn-primary p-4 rounded-br-lg rounded-tr-lg join-item "
             disabled={isPending}
           >
             {isPending ? "please wait..." : "Ask Question"}
