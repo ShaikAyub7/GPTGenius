@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { SiOpenaigym } from "react-icons/si";
 import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
+import { IoMdDownload } from "react-icons/io";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -89,11 +91,11 @@ const ImageGenerator = () => {
         {message.map((msg, idx) => {
           const avatar =
             msg.role === "user" ? (
-              <span className="text-xl">
+              <span className="text-xl flex">
                 {user?.imageUrl ? (
                   <img
                     src={user.imageUrl}
-                    className="w-7 h-7 rounded-full mt-2 absolute right-4  text-right"
+                    className="w-7 h-7 rounded-full mt-2 absolute right-4 top-7  text-right"
                     alt="User avatar"
                   />
                 ) : (
@@ -107,7 +109,7 @@ const ImageGenerator = () => {
           return (
             <div
               key={idx}
-              className={`my-2 p-2 rounded-xl   py-4  text-lg leading-loose border-b border-base-300 ${
+              className={`my-2 p-2 rounded-xl   py-4  text-lg leading-loose border-b border-base-300 relative ${
                 msg.role === "user"
                   ? "ml-auto bg-base-200 text-left max-w-[300px] w-auto overflow-hidden "
                   : "mr-auto bg-base-100 text-left max-w-sm"
@@ -115,17 +117,36 @@ const ImageGenerator = () => {
             >
               <span>{avatar}</span>
 
-              {msg.type === "image" ? (
-                <img
-                  src={msg.content}
-                  alt="Generated"
-                  className="max-w-full rounded-md mt-3"
-                />
-              ) : (
-                <div className="bg-base-100 shadow-lg rounded-xl p-2 pl-4 w-auto ">
-                  {msg.content}
-                </div>
-              )}
+              <a
+                href={msg.content}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=" mt-2 flex flex-col"
+              >
+                {msg.type === "image" ? (
+                  <>
+                    <a
+                      href={msg.content}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download="image.png"
+                      className="absolute top-3 right-0 p-3 "
+                    >
+                      <IoMdDownload />
+                    </a>
+                    <img
+                      src={msg.content}
+                      alt="Generated content"
+                      className="max-w-full rounded-md mt-3"
+                      loading="lazy"
+                    />
+                  </>
+                ) : (
+                  <div className="bg-base-100 shadow-lg rounded-xl p-2 pl-4 w-auto ">
+                    {msg.content}
+                  </div>
+                )}
+              </a>
             </div>
           );
         })}
