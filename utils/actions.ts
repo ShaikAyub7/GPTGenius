@@ -29,7 +29,6 @@ export const generateChatResponse = async (
       model: "gemini-2.0-flash",
       config: {
         temperature: 0,
-        maxOutputTokens: 100,
       },
       history,
     });
@@ -41,7 +40,7 @@ export const generateChatResponse = async (
     });
 
     const updatedHistory = chat.getHistory();
-    updatedHistory.forEach((msg) => console.log(msg));
+    // updatedHistory.forEach((msg) => console.log(msg));
 
     return result.text;
   } catch (error) {
@@ -74,9 +73,7 @@ If you can't find info on exact ${city}, or ${city} does not exist, or its popul
 
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
-      config: {
-        temperature: 0,
-      },
+
       contents: [
         {
           role: "user",
@@ -226,6 +223,7 @@ export const generateImage = async (
       contents: formattedMessages,
       config: {
         responseModalities: [Modality.TEXT, Modality.IMAGE],
+        temperature: 0,
       },
     });
 

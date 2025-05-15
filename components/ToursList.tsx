@@ -1,5 +1,4 @@
 import React from "react";
-import { Prisma } from "@prisma/client";
 import type { JsonValue } from "@prisma/client/runtime/library";
 import ToursCard from "./ToursCard";
 

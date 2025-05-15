@@ -1,4 +1,3 @@
-import React from "react";
 import { SiOpenaigym } from "react-icons/si";
 import ThemeToggle from "./ThemeToggle";
 const DrawerHeader = () => {

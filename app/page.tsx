@@ -9,10 +9,11 @@ const HomePage = () => {
         <div className="max-w-md">
           <h1 className="mb-5 text-5xl font-bold">GPT Genius</h1>
           <p className="mb-5">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+            Meet your new AI sidekick — smart, fast, and always ready to help.
+            Whether you're brainstorming ideas, solving problems, or just
+            curious about something, GPT Genius has your back.
           </p>
+
           <Link href={"/chat"} className="btn btn-primary">
             Get Started
           </Link>

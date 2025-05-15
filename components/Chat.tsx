@@ -4,8 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import ChatContent from "./ChatContent";
+import Form from "./Form";
 
-const Chat = ({ token }: { token: number }) => {
+const Chat = () => {
   const [text, setText] = useState<string>("");
   const [message, setMessage] = useState<{ role: string; content: string }[]>(
     []
@@ -50,36 +51,19 @@ const Chat = ({ token }: { token: number }) => {
     mutate(query);
     setText("");
   };
-
   return (
     <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto ]">
       <h3 className="font-bold text-center text-2xl leading-3.5 tracking-wider">
         Welcome to GPTGenius
-        <span className="text-[8px] ml-1 text-base-400">V.0.1</span>
-        {/* <p>{token}</p> */}
+        <span className="text-[10px] ml-1 text-base-400">V.0.1</span>
       </h3>
       <ChatContent isPending={isPending} message={message} />
-      <form
-        onSubmit={handleSubmit}
-        className="fixed bottom-6 w-full max-w-lg lg:max-w-4xl pt-12  md:max-w-xl"
-      >
-        <div className="join w-full">
-          <input
-            type="text"
-            placeholder="Message GeniusGpt"
-            className="input input-bordered join-item w-full"
-            value={text}
-            required
-            onChange={(e) => setText(e.target.value)}
-          />
-          <button
-            className="btn btn-primary p-4 rounded-br-lg rounded-tr-lg join-item "
-            disabled={isPending}
-          >
-            {isPending ? "please wait..." : "Ask Question"}
-          </button>
-        </div>
-      </form>
+      <Form
+        handleSubmit={handleSubmit}
+        isPending={isPending}
+        text={text}
+        setText={setText}
+      />
     </div>
   );
 };

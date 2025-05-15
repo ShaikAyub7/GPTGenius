@@ -17,7 +17,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   });
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <Toaster position="top-center" />
       {children}
     </QueryClientProvider>

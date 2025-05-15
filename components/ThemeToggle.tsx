@@ -29,7 +29,7 @@ const ThemeToggle = () => {
 
   return (
     <label
-      className="toggle text-base-content mr-4"
+      className="toggle text-base-content mr-4 mt-1"
       title="Toggle theme"
       aria-label="Toggle between dark and light mode"
     >
