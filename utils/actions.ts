@@ -206,13 +206,19 @@ export const fetchOrGenerateTokens = async (clerkId: string) => {
   return await generateUserTokensForId(clerkId);
 };
 
+const MAX_MESSAGES = 3;
+const MAX_CHAR_PER_MESSAGE = 1000;
+
 export const generateImage = async (
   chatMessages: { role: string; content: string }[]
 ) => {
-  const formattedMessages: Content[] = chatMessages.map((msg) => ({
-    role: msg.role,
-    parts: [{ text: msg.content }],
-  }));
+  const formattedMessages: Content[] = chatMessages
+    .filter((msg) => msg.role === "user" || msg.role === "model")
+    .slice(-MAX_MESSAGES)
+    .map((msg) => ({
+      role: msg.role,
+      parts: [{ text: msg.content.slice(0, MAX_CHAR_PER_MESSAGE) }],
+    }));
 
   try {
     const response = await ai.models.generateContent({
@@ -231,12 +237,20 @@ export const generateImage = async (
       const base64 = imagePart.inlineData.data;
       const mimeType = imagePart.inlineData.mimeType || "image/png";
       const imageUrl = `data:${mimeType};base64,${base64}`;
-
       return imageUrl;
     }
-  } catch (error) {
-    console.log(error);
-    return "something went wrong!";
+  } catch (error: any) {
+    console.error("Image generation error:", error);
+    if (error.statusCode === 429) {
+      return "Rate limit exceeded. Please wait a moment and try again.";
+    }
+    if (error.statusCode === 400) {
+      return "Invalid input format sent to Gemini. Check message roles.";
+    }
+    if (error.statusCode === 413) {
+      return "Request too large. Try simplifying your input.";
+    }
+    return "Something went wrong during image generation.";
   }
 
   return null;

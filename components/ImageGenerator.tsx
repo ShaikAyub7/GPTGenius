@@ -68,12 +68,22 @@ const ImageGenerator = () => {
     setText("");
   };
 
+  if (isPending) {
+    <p className="absolute top-3.5 left-45 right-45">
+      Generating image <span className="loading loading-dots"></span>
+    </p>;
+  }
   return (
     <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto]">
       <h3 className="font-bold text-center text-2xl mt-6 tracking-wider">
         Welcome to GPTGenius Image Generator
         <span className="text-[10px] ml-1 text-base-400">V.0.1</span>
       </h3>
+      {isPending && (
+        <p className="fixed top-8 left-1/2 transform -translate-x-1/2 p-4 text-sm text-gray-400 bg-base-100 shadow-2xl rounded-2xl z-40">
+          Generating image <span className="loading loading-dots"></span>
+        </p>
+      )}
 
       <div className="px-4 pt-8 pb-28 overflow-y-auto">
         {message.map((msg, idx) => {
@@ -97,10 +107,10 @@ const ImageGenerator = () => {
           return (
             <div
               key={idx}
-              className={`my-2 p-2 rounded-xl max-w-sm  py-4  text-lg leading-loose border-b border-base-300 ${
+              className={`my-2 p-2 rounded-xl   py-4  text-lg leading-loose border-b border-base-300 ${
                 msg.role === "user"
-                  ? "ml-auto bg-base-200 text-right  "
-                  : "mr-auto bg-base-100 text-left"
+                  ? "ml-auto bg-base-200 text-left max-w-[300px] w-auto overflow-hidden "
+                  : "mr-auto bg-base-100 text-left max-w-sm"
               }`}
             >
               <span>{avatar}</span>
@@ -112,9 +122,9 @@ const ImageGenerator = () => {
                   className="max-w-full rounded-md mt-3"
                 />
               ) : (
-                <p className="bg-base-100 shadow-lg rounded-xl p-2 pl-4 w-auto ">
+                <div className="bg-base-100 shadow-lg rounded-xl p-2 pl-4 w-auto ">
                   {msg.content}
-                </p>
+                </div>
               )}
             </div>
           );
@@ -138,7 +148,7 @@ const ImageGenerator = () => {
             className="btn btn-primary p-4 rounded-br-lg rounded-tr-lg join-item"
             disabled={isPending}
           >
-            {isPending ? "please wait..." : "Ask Question"}
+            {isPending ? "please wait..." : "Generate image"}
           </button>
         </div>
       </form>

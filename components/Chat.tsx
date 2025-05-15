@@ -56,7 +56,7 @@ const Chat = ({ token }: { token: number }) => {
       <h3 className="font-bold text-center text-2xl leading-3.5 tracking-wider">
         Welcome to GPTGenius
         <span className="text-[8px] ml-1 text-base-400">V.0.1</span>
-        <p>{token}</p>
+        {/* <p>{token}</p> */}
       </h3>
       <ChatContent isPending={isPending} message={message} />
       <form
