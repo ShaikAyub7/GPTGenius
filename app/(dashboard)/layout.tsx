@@ -1,5 +1,4 @@
 import Drawer from "@/components/Drawer";
-import { ReactNode } from "react";
 import { FaBarsStaggered } from "react-icons/fa6";
 
 function layout({ children }: { children: React.ReactNode }) {
