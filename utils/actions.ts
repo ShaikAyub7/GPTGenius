@@ -40,7 +40,6 @@ export const generateChatResponse = async (
     });
 
     const updatedHistory = chat.getHistory();
-    // updatedHistory.forEach((msg) => console.log(msg));
 
     return result.text;
   } catch (error) {
@@ -186,6 +185,7 @@ export const fetchUserId = async (clerkId: string) => {
   });
   return result?.tokens;
 };
+
 export const generateUserTokensForId = async (clerkId: string) => {
   const result = await prisma.token.create({
     data: {
