@@ -15,7 +15,7 @@ const ChatsPage = async () => {
   }
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Chat token={Number(tokens ?? 0)} />
+      <Chat />
     </HydrationBoundary>
   );
 };
