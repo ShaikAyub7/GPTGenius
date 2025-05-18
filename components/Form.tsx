@@ -14,7 +14,7 @@ const Form = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className=" sticky bottom-3.5 transform  max-w-4xl w-full"
+      className=" sticky bottom-3.5 transform  max-w-4xl w-full m-auto"
     >
       <div className="join w-full">
         <input
