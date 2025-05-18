@@ -34,7 +34,9 @@ const ToursPage = () => {
         </div>
       </form>
       {isPending ? (
-        <span className="loading"></span>
+        <div className="flex items-center justify-center h-screen">
+          <span className="loading "></span>
+        </div>
       ) : (
         <ToursList data={data || []} />
       )}

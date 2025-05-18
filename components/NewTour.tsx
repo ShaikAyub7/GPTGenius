@@ -45,7 +45,11 @@ const NewTour = () => {
   };
 
   if (isPending) {
-    return <span className="loading loading-dots loading-lg"></span>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="loading loading-dots"></span>
+      </div>
+    );
   }
   return (
     <>

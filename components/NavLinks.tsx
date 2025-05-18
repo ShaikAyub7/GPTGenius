@@ -15,14 +15,14 @@ export const links: Link[] = [
     href: "/image-generator",
     label: "Ai image",
   },
-  {
-    href: "/tours",
-    label: "Tours",
-  },
-  {
-    href: "/tours/new-tour",
-    label: "new tours",
-  },
+  // {
+  //   href: "/tours",
+  //   label: "Tours",
+  // },
+  // {
+  //   href: "/tours/new-tour",
+  //   label: "new tours",
+  // },
   {
     href: "/profile",
     label: "Profile",

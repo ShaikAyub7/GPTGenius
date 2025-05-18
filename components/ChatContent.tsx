@@ -41,7 +41,11 @@ const ChatContent = ({
         }
       )}
 
-      {isPending ? <span className="loading loading-dots"></span> : null}
+      {isPending ? (
+        <div className="flex items-center justify-center h-screen">
+          <span className="loading "></span>
+        </div>
+      ) : null}
     </div>
   );
 };
