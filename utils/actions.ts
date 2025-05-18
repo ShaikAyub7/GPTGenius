@@ -177,31 +177,31 @@ export const generateTourImages = async ({
   }
 };
 
-export const fetchUserId = async (clerkId: string) => {
-  const result = await prisma.token.findUnique({
-    where: {
-      clerkId,
-    },
-  });
-  return result?.tokens;
-};
+// export const fetchUserId = async (clerkId: string) => {
+//   const result = await prisma.token.findUnique({
+//     where: {
+//       clerkId,
+//     },
+//   });
+//   return result?.tokens;
+// };
 
-export const generateUserTokensForId = async (clerkId: string) => {
-  const result = await prisma.token.create({
-    data: {
-      clerkId,
-    },
-  });
-  return result?.tokens;
-};
+// export const generateUserTokensForId = async (clerkId: string) => {
+//   const result = await prisma.token.create({
+//     data: {
+//       clerkId,
+//     },
+//   });
+//   return result?.tokens;
+// };
 
-export const fetchOrGenerateTokens = async (clerkId: string) => {
-  const result = await fetchUserId(clerkId);
-  if (result) {
-    return result;
-  }
-  return await generateUserTokensForId(clerkId);
-};
+// export const fetchOrGenerateTokens = async (clerkId: string) => {
+//   const result = await fetchUserId(clerkId);
+//   if (result) {
+//     return result;
+//   }
+//   return await generateUserTokensForId(clerkId);
+// };
 
 const MAX_MESSAGES = 3;
 const MAX_CHAR_PER_MESSAGE = 1000;
@@ -253,3 +253,46 @@ export const generateImage = async (
 
   return null;
 };
+
+export type ChatRole = "user" | "assistant";
+
+export async function saveChat(role: ChatRole, content: string) {
+  try {
+    if (!role || !["user", "assistant"].includes(role)) {
+      throw new Error("Invalid role provided. Must be 'user' or 'assistant'.");
+    }
+
+    if (!content || content.trim() === "") {
+      throw new Error("Content cannot be empty.");
+    }
+
+    const saved = await prisma.chat.create({
+      data: {
+        role,
+        content,
+      },
+    });
+
+    return saved;
+  } catch (error) {
+    console.error("Error saving chat:", error);
+    throw error;
+  }
+}
+
+export async function getAllChats() {
+  try {
+    const chats = await prisma.chat.findMany({
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+    console.log(chats);
+    return chats;
+  } catch (error) {
+    console.error("Error getting all chats:", error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}

@@ -1,9 +1,10 @@
 "use client";
-import { generateChatResponse } from "@/utils/actions";
+import { generateChatResponse, getAllChats } from "@/utils/actions";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import ChatContent from "./ChatContent";
+
 import Form from "./Form";
 
 const Chat = () => {
@@ -41,16 +42,17 @@ const Chat = () => {
       toast.error(error.message || "Something went wrong.");
     },
   });
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isPending) return;
 
-    const query = { role: "user", content: text };
-    setMessage((prev) => [...prev, query]);
-    mutate(query);
+    const userMessage = { role: "user" as const, content: text };
+    setMessage((prev) => [...prev, userMessage]);
+    mutate(userMessage);
+    // await saveChat(userMessage.role, userMessage.content);
     setText("");
   };
+
   return (
     <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto ]">
       <h3 className="font-bold text-center text-2xl leading-3.5 tracking-wider">

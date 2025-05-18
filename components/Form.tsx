@@ -14,9 +14,9 @@ const Form = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="fixed bottom-6 lg:w-full max-w-lg lg:max-w-4xl pt-12  md:max-w-xl m-auto"
+      className=" sticky bottom-3.5 transform  max-w-4xl w-full"
     >
-      <div className="join md:full  lg:w-full">
+      <div className="join w-full">
         <input
           type="text"
           placeholder="Message GeniusGpt"

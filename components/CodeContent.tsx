@@ -1,10 +1,38 @@
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-const CodeContent = ({ content }: { content: string }) => {
+const CodeContent = ({
+  content,
+  role,
+  isPending,
+}: {
+  content: string;
+  role: string;
+  isPending: boolean;
+}) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const containsCodeBlock = /```[\s\S]*?```/.test(content);
+
   return (
     <div className="prose max-w-3xl">
+      {role === "assistant" && containsCodeBlock && (
+        <button
+          onClick={handleCopy}
+          className="mb-2 px-3 py-1 rounded bg-base-200 hover:bg-base-300 transition-all"
+        >
+          {copied ? "Copied!" : isPending ? "Copying..." : "Copy"}
+        </button>
+      )}
+
       <ReactMarkdown
         components={{
           code({
