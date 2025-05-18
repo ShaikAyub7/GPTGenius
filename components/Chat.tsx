@@ -4,7 +4,6 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import ChatContent from "./ChatContent";
-
 import Form from "./Form";
 
 const Chat = () => {
@@ -49,13 +48,12 @@ const Chat = () => {
     const userMessage = { role: "user" as const, content: text };
     setMessage((prev) => [...prev, userMessage]);
     mutate(userMessage);
-    // await saveChat(userMessage.role, userMessage.content);
     setText("");
   };
 
   return (
-    <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto ]">
-      <h3 className="font-bold text-center text-2xl leading-3.5 tracking-wider">
+    <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto ] ">
+      <h3 className="font-bold text-center text-2xl  tracking-wider">
         Welcome to GPTGenius
         <span className="text-[10px] ml-1 text-base-400">V.0.1</span>
       </h3>
