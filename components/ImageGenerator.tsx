@@ -120,7 +120,7 @@ const ImageGenerator = () => {
                     />
                   </>
                 ) : (
-                  <div className="bg-base-100 shadow-lg rounded-xl p-2 pl-4 w-auto ">
+                  <div className="bg-base-100 shadow-lg rounded-xl p-2 pl-4 w-auto overflow-hidden text-ellipsis text-clip">
                     {msg.content}
                   </div>
                 )}
