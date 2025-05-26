@@ -53,7 +53,7 @@ const Chat = () => {
 
   return (
     <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto ] ">
-      <h3 className="font-bold text-center text-2xl  tracking-wider">
+      <h3 className="font-bold text-center text-2xl  tracking-wider  ">
         Welcome to GPTGenius
         <span className="text-[10px] ml-1 text-base-400">V.0.1</span>
       </h3>
