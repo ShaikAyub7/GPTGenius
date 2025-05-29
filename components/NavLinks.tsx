@@ -21,14 +21,7 @@ export const links: Link[] = [
     label: "Ai image",
     icon: <IoImageOutline />,
   },
-  // {
-  //   href: "/tours",
-  //   label: "Tours",
-  // },
-  // {
-  //   href: "/tours/new-tour",
-  //   label: "new tours",
-  // },
+
   {
     href: "/profile",
     label: "Profile",
