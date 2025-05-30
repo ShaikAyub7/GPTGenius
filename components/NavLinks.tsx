@@ -31,7 +31,7 @@ export const links: Link[] = [
 
 const NavLinks = () => {
   return (
-    <div className="menu  text-base-content min-h-full w-80 p-5">
+    <div className="menu text-base-content min-h-full w-80 p-5">
       {links.map((link) => {
         return (
           <Link
