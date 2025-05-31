@@ -1,5 +1,4 @@
 "use client";
-
 import { useUser } from "@clerk/nextjs";
 import CodeContent from "./CodeContent";
 import Avatar from "./Avatar";
