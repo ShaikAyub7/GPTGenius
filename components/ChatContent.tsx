@@ -30,6 +30,7 @@ const ChatContent = ({
                 role={role as "user" | "assistant"}
                 user={user ? { imageUrl: user.imageUrl } : undefined}
               />
+
               <CodeContent
                 content={content}
                 role={role}
