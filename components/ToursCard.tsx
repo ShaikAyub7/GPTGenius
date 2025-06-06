@@ -9,7 +9,7 @@ const ToursCard = ({ tour }: { tour: Tours }) => {
       href={`/tours/${id}`}
       className="card card-compact p-2 shadow-xl rounded-xl bg-base-100"
     >
-      <div className="card-body items-center  text-center">
+      <div className="card-body items-center text-center">
         <h2 className="card-title text-center">
           {city},{country}
         </h2>

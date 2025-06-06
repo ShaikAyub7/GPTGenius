@@ -29,13 +29,13 @@ const ToursPage = () => {
             disabled={isPending}
             onClick={() => setSearchValue("")}
           >
-            {isPending ? "please wait. .." : "reset"}
+            {isPending ? "please wait..." : "reset"}
           </button>
         </div>
       </form>
       {isPending ? (
         <div className="flex items-center justify-center h-screen">
-          <span className="loading "></span>
+          <span className="loading"></span>
         </div>
       ) : (
         <ToursList data={data || []} />
