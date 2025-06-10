@@ -50,6 +50,7 @@ const NewTour = () => {
       </div>
     );
   }
+
   return (
     <>
       <form onSubmit={handleSubmit} className="max-w-2xl ">
