@@ -31,7 +31,6 @@ const NewTour = () => {
         queryClient.invalidateQueries({ queryKey: ["tours"] });
         return newTour;
       }
-
       toast.error("No City Found ....");
       return null;
     },
