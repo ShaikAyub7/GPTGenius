@@ -1,6 +1,5 @@
 import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
-import React from "react";
 
 const UserIcon = async () => {
   const user = await currentUser();
