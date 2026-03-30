@@ -9,7 +9,7 @@ import Form from "./Form";
 const Chat = () => {
   const [text, setText] = useState<string>("");
   const [message, setMessage] = useState<{ role: string; content: string }[]>(
-    []
+    [],
   );
 
   const { mutate, isPending } = useMutation({
@@ -41,6 +41,7 @@ const Chat = () => {
       toast.error(error.message || "Something went wrong.");
     },
   });
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isPending) return;
