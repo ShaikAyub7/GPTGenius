@@ -5,17 +5,22 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { getTokens } from "@/utils/actions";
+import { getTokens, getAllChats } from "@/utils/actions";
 
 const ChatsPage = async () => {
-  const queryClient = new QueryClient({});
+  const queryClient = new QueryClient();
+
   const tokens = await getTokens();
+
   if (!tokens) {
     return <p>no token</p>;
   }
+
+  const chats = await getAllChats();
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Chat />
+      <Chat initialMessages={chats} />
     </HydrationBoundary>
   );
 };

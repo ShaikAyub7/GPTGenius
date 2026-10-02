@@ -2,7 +2,7 @@
 "use server";
 
 import { GoogleGenAI, Modality, Content } from "@google/genai";
-
+import { auth } from "@clerk/nextjs/server";
 import prisma from "./db";
 import { Tour } from "@/components/TourInfo";
 
@@ -510,62 +510,61 @@ export type ChatRole = "user" | "assistant";
 // SAVE CHAT
 // ============================================================
 
+export type ChatRole = "user" | "assistant";
+
 export async function saveChat(
   role: ChatRole,
   content: string
 ) {
   try {
-    if (
-      !role ||
-      !["user", "assistant"].includes(role)
-    ) {
-      throw new Error(
-        "Invalid role provided. Must be 'user' or 'assistant'."
-      );
+    const { userId } = await auth();
+
+    if (!userId) {
+      throw new Error("Unauthorized");
     }
 
-    if (!content || content.trim() === "") {
-      throw new Error("Content cannot be empty.");
+    if (!["user", "assistant"].includes(role)) {
+      throw new Error("Invalid chat role");
     }
 
-    const saved = await prisma.chat.create({
+    if (!content?.trim()) {
+      throw new Error("Chat content cannot be empty");
+    }
+
+    return await prisma.chat.create({
       data: {
+        clerkId: userId,
         role,
-        content,
+        content: content.trim(),
       },
     });
-
-    return saved;
   } catch (error) {
     console.error("Error saving chat:", error);
-
     throw error;
   }
 }
-
 // ============================================================
 // GET ALL CHATS
 // ============================================================
 
 export async function getAllChats() {
   try {
-    const chats = await prisma.chat.findMany({
+    const { userId } = await auth();
+
+    if (!userId) {
+      return [];
+    }
+
+    return await prisma.chat.findMany({
+      where: {
+        clerkId: userId,
+      },
       orderBy: {
         createdAt: "asc",
       },
     });
-
-    return chats;
   } catch (error) {
-    console.error("Error getting all chats:", error);
-
+    console.error("Error getting chats:", error);
     throw error;
   }
-
-  // IMPORTANT:
-  // Do NOT call prisma.$disconnect() here.
-  //
-  // Next.js uses the Prisma client across requests.
-  // Disconnecting it after every request can cause
-  // connection problems later.
 }
