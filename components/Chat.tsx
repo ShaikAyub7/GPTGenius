@@ -1,9 +1,11 @@
 "use client";
 
 import { generateChatResponse, saveChat } from "@/utils/actions";
+
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+
 import ChatContent from "./ChatContent";
 import Form from "./Form";
 
@@ -18,53 +20,60 @@ type ChatProps = {
 };
 
 const Chat = ({ initialMessages }: ChatProps) => {
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState("");
 
-  // Load previous messages from database
   const [message, setMessage] = useState<Message[]>(initialMessages);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (query: Message): Promise<string> => {
+    mutationFn: async (query: Message) => {
+      // Add user message to UI immediately
+      const chatMessages = [...message, query];
+
+      // Generate Gemini response
+      const response = await generateChatResponse(chatMessages);
+
+      if (!response) {
+        throw new Error("No response from Gemini");
+      }
+
+      return {
+        userMessage: query,
+        assistantMessage: response,
+      };
+    },
+
+    onSuccess: async ({ userMessage, assistantMessage }) => {
       try {
-        // Include the new user message when sending history to Gemini
-        const chatMessage = [...message, query];
+        // Save user message
+        const savedUser = await saveChat("user", userMessage.content);
 
-        const response = await generateChatResponse(chatMessage);
+        // Save assistant message
+        const savedAssistant = await saveChat("assistant", assistantMessage);
 
-        return response || "No response";
+        // Update UI with database IDs
+        setMessage((prev) => [
+          ...prev,
+          {
+            id: savedUser.id,
+            role: "user",
+            content: savedUser.content,
+          },
+          {
+            id: savedAssistant.id,
+            role: "assistant",
+            content: savedAssistant.content,
+          },
+        ]);
+
+        setText("");
       } catch (error) {
-        console.error("Error processing the mutation:", error);
-
-        throw new Error("An error occurred while processing your message.");
+        console.error("Error saving chat:", error);
+        toast.error("Response generated, but failed to save chat.");
       }
     },
 
-    onSuccess: async (data) => {
-      if (!data) {
-        toast.error("Something went wrong");
-        return;
-      }
-
-      // Add assistant response to UI
-      setMessage((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: data,
-        },
-      ]);
-
-      // Save assistant response to database
-      try {
-        await saveChat("assistant", data);
-      } catch (error) {
-        console.error("Failed to save assistant message:", error);
-
-        toast.error("Response generated but wasn't saved.");
-      }
-    },
-
-    onError(error) {
+    onError: (error) => {
+      console.error(error);
       toast.error(error.message || "Something went wrong.");
     },
   });
@@ -83,22 +92,12 @@ const Chat = ({ initialMessages }: ChatProps) => {
       content: trimmedText,
     };
 
-    // Immediately show user message
+    // Show user message immediately
     setMessage((prev) => [...prev, userMessage]);
 
-    // Save user message to database
-    try {
-      await saveChat("user", trimmedText);
-    } catch (error) {
-      console.error("Failed to save user message:", error);
-
-      toast.error("Message couldn't be saved.");
-    }
-
-    // Send message to Gemini
+    // Generate response
     mutate(userMessage);
 
-    // Clear input
     setText("");
   };
 
