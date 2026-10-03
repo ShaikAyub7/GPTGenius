@@ -1,15 +1,13 @@
 "use client";
 
 import { generateChatResponse, saveChat } from "@/utils/actions";
-
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-
 import ChatContent from "./ChatContent";
 import Form from "./Form";
 
-type Message = {
+export type Message = {
   id?: string;
   role: "user" | "assistant";
   content: string;
@@ -22,63 +20,48 @@ type ChatProps = {
 const Chat = ({ initialMessages }: ChatProps) => {
   const [text, setText] = useState("");
 
-  const [message, setMessage] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (query: Message) => {
-      // Add user message to UI immediately
-      const chatMessages = [...message, query];
+    mutationFn: async (userMessage: Message) => {
+      // IMPORTANT:
+      // Use the latest messages + current user message
+      // for Gemini, but don't modify React state here.
+      const chatMessages = [...messages, userMessage];
 
-      // Generate Gemini response
       const response = await generateChatResponse(chatMessages);
 
       if (!response) {
         throw new Error("No response from Gemini");
       }
 
-      return {
-        userMessage: query,
-        assistantMessage: response,
-      };
+      return response;
     },
 
-    onSuccess: async ({ userMessage, assistantMessage }) => {
+    onSuccess: async (response, userMessage) => {
+      // Add assistant response ONLY ONCE
+      const assistantMessage: Message = {
+        role: "assistant",
+        content: response,
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+
+      // Save assistant response to database
       try {
-        // Save user message
-        const savedUser = await saveChat("user", userMessage.content);
-
-        // Save assistant message
-        const savedAssistant = await saveChat("assistant", assistantMessage);
-
-        // Update UI with database IDs
-        setMessage((prev) => [
-          ...prev,
-          {
-            id: savedUser.id,
-            role: "user",
-            content: savedUser.content,
-          },
-          {
-            id: savedAssistant.id,
-            role: "assistant",
-            content: savedAssistant.content,
-          },
-        ]);
-
-        setText("");
+        await saveChat("assistant", response);
       } catch (error) {
-        console.error("Error saving chat:", error);
-        toast.error("Response generated, but failed to save chat.");
+        console.error("Failed to save assistant message:", error);
       }
     },
 
     onError: (error) => {
-      console.error(error);
+      console.error("Chat error:", error);
       toast.error(error.message || "Something went wrong.");
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isPending) return;
@@ -92,23 +75,32 @@ const Chat = ({ initialMessages }: ChatProps) => {
       content: trimmedText,
     };
 
-    // Show user message immediately
-    setMessage((prev) => [...prev, userMessage]);
+    // Add user message ONLY ONCE
+    setMessages((prev) => [...prev, userMessage]);
 
-    // Generate response
+    // Save user message
+    saveChat("user", trimmedText).catch((error) => {
+      console.error("Failed to save user message:", error);
+    });
+
+    // Send to Gemini
     mutate(userMessage);
 
+    // Clear input
     setText("");
   };
 
   return (
-    <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr_auto]">
+    <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[auto_1fr_auto]">
       <h3 className="font-bold text-center text-2xl tracking-wider">
         Welcome to GPTGenius
         <span className="text-[10px] ml-1 text-base-400">V.0.1</span>
       </h3>
 
-      <ChatContent isPending={isPending} message={message} />
+      <ChatContent
+        isPending={isPending}
+        message={messages}
+      />
 
       <Form
         handleSubmit={handleSubmit}
