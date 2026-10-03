@@ -61,7 +61,7 @@ const Chat = ({ initialMessages }: ChatProps) => {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<Element>) => {
     e.preventDefault();
 
     if (isPending) return;
@@ -97,10 +97,7 @@ const Chat = ({ initialMessages }: ChatProps) => {
         <span className="text-[10px] ml-1 text-base-400">V.0.1</span>
       </h3>
 
-      <ChatContent
-        isPending={isPending}
-        message={messages}
-      />
+      <ChatContent isPending={isPending} message={messages} />
 
       <Form
         handleSubmit={handleSubmit}

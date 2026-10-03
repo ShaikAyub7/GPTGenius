@@ -6,7 +6,7 @@ const Form = ({
   setText,
   isPending,
 }: {
-  handleSubmit: (e: React.FormEvent) => void;
+  handleSubmit: (e: React.FormEvent<Element>) => void;
   text: string;
   setText: (text: string) => void;
   isPending: boolean;
